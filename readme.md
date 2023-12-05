@@ -69,5 +69,5 @@ target = sc.read_h5ad(path2)
 align_source_cor, trans_dict = san.santo(source, target, args)
 
 ```
-For example dataset, please download from [here](https://drive.google.com/drive/folders/18VAlAIkixUksd_I8oiZMVys3zeMrk9pA?usp=sharing) and put them into `/examples` folder.
 
+For example dataset, please download from [here](https://drive.google.com/drive/folders/18VAlAIkixUksd_I8oiZMVys3zeMrk9pA?usp=sharing). Create a new folder `/examples` and put the data into `/examples` folder.
