@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: SANTO
+Version: 0.0.2
+Summary: SANTO: a coarse-to-fine stitching and alignment method for spatial omics
+Home-page: https://github.com/leihouyeung/SANTO
+Author: Haoyang Li
+Author-email: lihy1995@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+License-File: LICENSE
+
+UNKNOWN
+
