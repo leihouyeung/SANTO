@@ -13,7 +13,7 @@ SANTO is a coarse-to-fine method targeting alignment and stitching tasks for spa
 
 ## Installation
 It's easy to install SANTO by only one command.
-`pip install SANTO`
+`pip install santo`
 
 ## Usage
 The input data of SANTO including:
@@ -28,5 +28,3 @@ Returned `align_source_coor` is transformed spatial coordinates of source slice.
 
 The tutorial is shown in this notebook. Please have a check. 
 
-
-```
