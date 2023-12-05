@@ -32,7 +32,7 @@ import santo as san
 import scanpy as sc
 import easydict
 
-\# For alignment task
+# For alignment task
 args = easydict.EasyDict({})
 args.epochs = 30
 args.lr = 0.01
@@ -50,7 +50,7 @@ target = sc.read_h5ad(path2)
 align_source_cor, trans_dict = san.santo(source, target, args)
 
 
-\# For stitching task
+# For stitching task
 
 args = easydict.EasyDict({})
 args.epochs = 100
@@ -71,4 +71,3 @@ align_source_cor, trans_dict = san.santo(source, target, args)
 ```
 For example dataset, please download from [here](https://drive.google.com/drive/folders/18VAlAIkixUksd_I8oiZMVys3zeMrk9pA?usp=sharing) and put them into `/examples` folder.
 
-~~~
