@@ -11,7 +11,8 @@ SANTO is a coarse-to-fine method targeting alignment and stitching tasks for spa
 - `lr`: Learning rate.
 - `epochs`: Epochs. 
 - `device`: The device you use. (recommend 'cuda:0')
-- 
+
+
 ## Installation
 Users need to create an environment and install SANTO by following procedures:
 ```
