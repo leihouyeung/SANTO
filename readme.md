@@ -10,13 +10,14 @@ SANTO is a coarse-to-fine method targeting alignment and stitching tasks for spa
 - `k`: The number of neighbors during graph construction.
 - `lr`: Learning rate.
 - `epochs`: Epochs. 
-
+- `device`: The device you use. (recommend 'cuda:0')
+- 
 ## Installation
 Users need to create an environment and install SANTO by following procedures:
 ```
-conda create -n santo_env python=3.7
+conda create -n santo_env python=3.10
 conda activate santo_env
-pip install SANTO
+pip install -r requirements.txt
 ```
 
 ## Usage
@@ -30,48 +31,9 @@ The function users should use is:
 
 Returned `align_source_coor` is the transformed spatial coordinates of source slice. `transform_dict` includes the coarse and fine rotation and translation. 
 
-Here is the detailed tutorial:
-```
-import santo as san
-import scanpy as sc
-import easydict
+## Demo
+Please see the Jupyter notebook called `SANTO.ipynb` in the Reproducibility folder. It includes the details for aligning Starmap PLUS, DLPFC and MERFISH datasets.
 
-# For alignment task
-args = easydict.EasyDict({})
-args.epochs = 30
-args.lr = 0.01
-args.k = 10             # number of neighbors during graph construction
-args.diff_omics = False # whether to use different omics data
-args.alpha = 0.9        # weight of transcriptional loss (0 to 1)
-args.mode = 'align'     # Choose the mode among 'align', 'stitch' and None
-args.dimension = 2      # choose the dimension of coordinates (2 or 3)
+## Reproducibility
 
-path1 = './examples/starmap_align_source.h5ad'
-path2 = './examples/starmap_align_target.h5ad'
-source = sc.read_h5ad(path1)
-target = sc.read_h5ad(path2)
-
-align_source_cor, trans_dict = san.santo(source, target, args)
-
-
-# For stitching task
-
-args = easydict.EasyDict({})
-args.epochs = 100
-args.lr = 0.001
-args.k = 10             # number of neighbors during graph construction
-args.diff_omics = False # whether to use different omics data
-args.alpha = 0.9        # weight of transcriptional loss (0 to 1)
-args.mode = 'stitch'    # Choose the mode among 'align', 'stitch' and None
-args.dimension = 2      # choose the dimension of coordinates (2 or 3)
-
-path1 = './examples/visium_stitch_source.h5ad'
-path2 = './examples/visium_stitch_target.h5ad'
-source = sc.read_h5ad(path1)
-target = sc.read_h5ad(path2)
-
-align_source_cor, trans_dict = san.santo(source, target, args)
-
-```
-
-For example dataset, please download from [here](https://drive.google.com/drive/folders/18VAlAIkixUksd_I8oiZMVys3zeMrk9pA?usp=sharing). Create a new folder `/examples` and put the data into `/examples` folder.
+We supplied the reproducibility of our method, including the benchmarking with PASTE, PASTE2, SLAT and STAligner under Starmap PLUS, DLPFC and MERFISH datasets.
