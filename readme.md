@@ -1,5 +1,5 @@
 
-# SANTO: a coarse-to-fine stitching and alignment method for spatial omics
+# SANTO: a coarse-to-fine alignment and stitching method for spatial omics
 
 
 SANTO is a coarse-to-fine method targeting alignment and stitching tasks for spatial omics data. Before using SANTO, several parameters should be specified:
@@ -29,7 +29,8 @@ The function users should use is:
 
 `aligned_source_coor, transform_dict = santo(source_slice, target_slice, args)`
 
-Returned `align_source_coor` is the transformed spatial coordinates of source slice. `transform_dict` includes the coarse and fine rotation and translation. 
+Returned `align_source_coor` is the transformed spatial coordinates of source slice. 
+`transform_dict` includes the coarse and fine rotation and translation. 
 
 ## Demo
 Please see the Jupyter notebook called `SANTO.ipynb` in the Reproducibility folder. It includes the details for aligning Starmap PLUS, DLPFC and MERFISH datasets.
