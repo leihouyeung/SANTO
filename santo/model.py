@@ -22,10 +22,9 @@ def knn(x, k):
     return idx
 
 
-def get_graph_feature(x, k=3):
+def get_graph_feature(x, k=3, device='cpu'):
     idx = knn(x, k=k)  # (batch_size, num_points, k)
     batch_size, num_points, _ = idx.size()
-    device = torch.device('cuda')
     idx_base = torch.arange(0, batch_size, device=device).view(-1, 1, 1) * num_points
     idx = idx + idx_base
     idx = idx.view(-1)
@@ -41,23 +40,24 @@ def get_graph_feature(x, k=3):
 
 
 class DGCNN_cor(nn.Module):
-    def __init__(self, cor_dim = 2, k =3):
+    def __init__(self, cor_dim = 2, k =3, device = 'cpu'):
         super(DGCNN_cor, self).__init__()
         self.k = k
-        self.conv1 = nn.Conv2d(cor_dim*2, 32, kernel_size=1, bias=False) # input: 2*2 or 3*2
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=1, bias=False)
-        self.conv3 = nn.Conv2d(64, 128, kernel_size=1, bias=False)
-        self.conv4 = nn.Conv2d(128, 256, kernel_size=1, bias=False)
-        self.conv5 = nn.Conv2d(32+64+128+256, 512, kernel_size=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(32)
-        self.bn2 = nn.BatchNorm2d(64)
-        self.bn3 = nn.BatchNorm2d(128)
-        self.bn4 = nn.BatchNorm2d(256)
-        self.bn5 = nn.BatchNorm2d(512)
+        self.device = device
+        self.conv1 = nn.Conv2d(cor_dim*2, 8, kernel_size=1, bias=False) # input: 2*2 or 3*2
+        self.conv2 = nn.Conv2d(8, 16, kernel_size=1, bias=False)
+        self.conv3 = nn.Conv2d(16, 32, kernel_size=1, bias=False)
+        self.conv4 = nn.Conv2d(32, 64, kernel_size=1, bias=False)
+        self.conv5 = nn.Conv2d(8+16+32+64, 128, kernel_size=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(8)
+        self.bn2 = nn.BatchNorm2d(16)
+        self.bn3 = nn.BatchNorm2d(32)
+        self.bn4 = nn.BatchNorm2d(64)
+        self.bn5 = nn.BatchNorm2d(128)
 
     def forward(self, x):
         batch_size, num_dims, num_points = x.size()
-        x = get_graph_feature(x,self.k)
+        x = get_graph_feature(x, self.k, self.device)
         x = F.relu(self.bn1(self.conv1(x)))
         x1 = x.max(dim=-1, keepdim=True)[0]
         x = F.relu(self.bn2(self.conv2(x)))
@@ -71,23 +71,24 @@ class DGCNN_cor(nn.Module):
         return x
 
 class DGCNN_exp(nn.Module):
-    def __init__(self, exp_dim = 1000, k=3):
+    def __init__(self, exp_dim = 1000, k=3, device = 'cpu'):
         super(DGCNN_exp, self).__init__()
         self.k = k
-        self.conv1 = nn.Conv2d(2*exp_dim, 64, kernel_size=1, bias=False)
-        self.conv2 = nn.Conv2d(64, 128, kernel_size=1, bias=False)
-        self.conv3 = nn.Conv2d(128, 256, kernel_size=1, bias=False)
-        self.conv4 = nn.Conv2d(256, 512, kernel_size=1, bias=False)
-        self.conv5 = nn.Conv2d(64+128+256+512, 1024, kernel_size=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(64)
-        self.bn2 = nn.BatchNorm2d(128)
-        self.bn3 = nn.BatchNorm2d(256)
-        self.bn4 = nn.BatchNorm2d(512)
-        self.bn5 = nn.BatchNorm2d(1024)
+        self.device = device
+        self.conv1 = nn.Conv2d(exp_dim*2, 32, kernel_size=1, bias=False) # input: 2*2 or 3*2
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=1, bias=False)
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=1, bias=False)
+        self.conv4 = nn.Conv2d(128, 256, kernel_size=1, bias=False)
+        self.conv5 = nn.Conv2d(32+64+128+256, 512, kernel_size=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(32)
+        self.bn2 = nn.BatchNorm2d(64)
+        self.bn3 = nn.BatchNorm2d(128)
+        self.bn4 = nn.BatchNorm2d(256)
+        self.bn5 = nn.BatchNorm2d(512)
 
     def forward(self, x):
         batch_size, num_dims, num_points = x.size()
-        x = get_graph_feature(x,self.k)
+        x = get_graph_feature(x,self.k, self.device)
         x = F.relu(self.bn1(self.conv1(x)))
         x1 = x.max(dim=-1, keepdim=True)[0]
         x = F.relu(self.bn2(self.conv2(x)))
@@ -157,8 +158,9 @@ class Model(nn.Module):
         self.exp_dim = args.exp_dim
         self.dimension = args.dimension
         self.k = args.k
-        self.cor_emb_nn = DGCNN_cor(cor_dim = self.dimension,k=args.k)
-        self.exp_emb_nn = DGCNN_exp(exp_dim = self.exp_dim,k=args.k)
+        self.device = args.device
+        self.cor_emb_nn = DGCNN_cor(cor_dim = self.dimension,k=args.k, device = self.device)
+        self.exp_emb_nn = DGCNN_exp(exp_dim = self.exp_dim,k=args.k, device = self.device)
         self.head = SVDHead(args=args)
 
     def forward(self, *input):
