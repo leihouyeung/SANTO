@@ -1,6 +1,7 @@
 
 # SANTO: a coarse-to-fine alignment and stitching method for spatial omics
 
+![Pipeline of SANTO](/pipeline.png)
 
 SANTO is a coarse-to-fine method targeting alignment and stitching tasks for spatial omics data. Before using SANTO, several parameters should be specified:
 - `mode`: Users should choose their task is `align` or `stitch`.
