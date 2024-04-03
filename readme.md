@@ -33,7 +33,7 @@ Returned `align_source_coor` is the transformed spatial coordinates of source sl
 `transform_dict` includes the coarse and fine rotation and translation. 
 
 ## Demo
-Please see the Jupyter notebook called `SANTO.ipynb` in the Reproducibility folder. It includes the details for aligning Starmap PLUS, DLPFC and MERFISH datasets.
+Please see the Jupyter notebook called `SANTO.ipynb`. It includes the demos for aligning Starmap PLUS, DLPFC and MERFISH datasets by SANTO.
 
 ## Reproducibility
 
